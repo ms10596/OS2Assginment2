@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.print("Enter disk size: ");
         int diskSize = cin.nextInt();
-        System.out.println("Enter extent size: ");
+        System.out.print("Enter extent size: ");
         int extentSize = cin.nextInt();
         FileSystem fileSystem = new FileSystem(Loading.load(),diskSize,extentSize);
         while(true){
@@ -29,7 +29,7 @@ public class Main {
                 case "struct":
                     fileSystem.displayDiskStructure();
                     break;
-                case "Exit":
+                case "exit":
                     Saving.save(fileSystem.getRoot());
                     return;
             }

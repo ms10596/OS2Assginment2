@@ -24,6 +24,14 @@ public class Directory {
         return pathParser.getLastPieceOfPath();
     }
 
+    private Directory findDirectoryInCurrentDirectory(String name) {
+        for (Directory directory : directories) {
+            if (directory.getName().equals(name)) {
+                return directory;
+            }
+        }
+        return null;
+    }
     private ArrayList<Integer> deleteDirectoryInCurrentDirectory(String name) {
         System.out.println(name);
         Directory toBeDeleted = findDirectoryInCurrentDirectory(name);
@@ -44,18 +52,9 @@ public class Directory {
         while (directories.size() > 0) {
             Directory directory = directories.get(0);
             allocatedBlocks.addAll(directory.deleteAllFilesInCurrentDirectory());
-            //while(directories.get(0).)
             allocatedBlocks.addAll(deleteDirectoryInCurrentDirectory(directory.getName()));
         }
         return allocatedBlocks;
-    }
-    private Directory findDirectoryInCurrentDirectory(String name) {
-        for (Directory directory : directories) {
-            if (directory.getName().equals(name)) {
-                return directory;
-            }
-        }
-        return null;
     }
     public boolean createDirectory(String path) {
         PathParser pathParser = new PathParser(path);

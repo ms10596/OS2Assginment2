@@ -27,8 +27,7 @@ public class FileSystem {
         return disk.free(root.deleteFile(path));
     }
     public boolean deleteFolder(String path){
-        root.deleteDirectory(path);
-        return true;
+        return disk.free(root.deleteDirectory(path));
     }
     public void displayDiskStatus(){
         System.out.println("Empty space: "+disk.emptySpace()+ " KB");
