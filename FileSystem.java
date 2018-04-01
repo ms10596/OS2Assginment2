@@ -32,7 +32,9 @@ public class FileSystem {
     public void displayDiskStatus(){
         System.out.println("Empty space: "+disk.emptySpace()+ " KB");
         System.out.println("Allocated space: "+disk.allocatedSpace() + " KB");
-        System.out.println(disk.getExtents());
+        for(Extent extent:disk.getExtents()) {
+            System.out.println(extent);
+        }
     }
     public void displayDiskStructure(){
         System.out.println(root);

@@ -43,13 +43,6 @@ public class Extent {
         }
         return true;
     }
-    public ArrayList<Integer> getAllocatedBlocks() {
-        ArrayList<Integer> allocatedBlocks = new ArrayList<>();
-        for(int i=start; i< start + size; i++){
-            allocatedBlocks.add(i);
-        }
-        return allocatedBlocks;
-    }
 
     @Override
     public String toString() {
@@ -57,8 +50,8 @@ public class Extent {
         for (int i = start; i < start + size; i++) {
             string += Integer.toString(i) + ":" + Boolean.toString(allocatedBlocks[i - start]) + " ";
         }
-        string += "\n";
         return string;
     }
+
 }
 
