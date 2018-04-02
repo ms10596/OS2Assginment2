@@ -9,7 +9,7 @@ public class Disk {
     public Disk(int n, int extentSize) {
         this.n = n;
         extents = new ArrayList<>();
-        for(int i=0;i<n;i+=5) {
+        for(int i=0;i<n;i+=extentSize) {
             extents.add(new Extent(i, extentSize));
         }
     }
