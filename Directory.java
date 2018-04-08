@@ -101,19 +101,15 @@ public class Directory {
         return allocatedBlocks;
     }
 
-    public boolean createFile(String path, Block indexBlock) {
+    public boolean createFile(String path, Block allocatedBlocks) {
         PathParser pathParser = new PathParser(path);
+        Directory currentDirectory = this;
         pathParser.retrieveParent();
-        return createFileRecursivly(this, pathParser, indexBlock);
-    }
-    public boolean createFileRecursivly(Directory currentDirectory,PathParser pathParser, Block indexBlock) {
-        if(pathParser.isLastPiece()) {
-            currentDirectory.files.add(new File(pathParser.getPath(), indexBlock));
-            return true;
+        while (pathParser.isLastPiece() == false) {
+            currentDirectory = currentDirectory.findDirectoryInCurrentDirectory(pathParser.retrieveParent());
         }
-        Directory nextOne = currentDirectory.findDirectoryInCurrentDirectory(pathParser.retrieveParent());
-        return createFileRecursivly(nextOne,pathParser , indexBlock);
-
+        currentDirectory.files.add(new File(path, allocatedBlocks));
+        return true;
     }
 
     public Block deleteFile(String path) {
@@ -125,6 +121,7 @@ public class Directory {
         }
         return currentDirectory.deleteFileInCurrentDirectory(pathParser.getLastPieceOfPath());
     }
+
     private String tabs(int n) {
         String string = new String();
         for (int i = 1; i < n; i++) {
