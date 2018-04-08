@@ -100,16 +100,22 @@ public class Directory {
         }
         return allocatedBlocks;
     }
-    public boolean createFile(String path, Block allocatedBlocks) {
+
+    public boolean createFile(String path, Block indexBlock) {
         PathParser pathParser = new PathParser(path);
-        Directory currentDirectory = this;
         pathParser.retrieveParent();
-        while (pathParser.isLastPiece() == false) {
-            currentDirectory = currentDirectory.findDirectoryInCurrentDirectory(pathParser.retrieveParent());
-        }
-        currentDirectory.files.add(new File(path, allocatedBlocks));
-        return true;
+        return createFileRecursivly(this, pathParser, indexBlock);
     }
+    public boolean createFileRecursivly(Directory currentDirectory,PathParser pathParser, Block indexBlock) {
+        if(pathParser.isLastPiece()) {
+            currentDirectory.files.add(new File(pathParser.getPath(), indexBlock));
+            return true;
+        }
+        Directory nextOne = currentDirectory.findDirectoryInCurrentDirectory(pathParser.retrieveParent());
+        return createFileRecursivly(nextOne,pathParser , indexBlock);
+
+    }
+
     public Block deleteFile(String path) {
         PathParser pathParser = new PathParser(path);
         Directory currentDirectory = this;
@@ -119,7 +125,13 @@ public class Directory {
         }
         return currentDirectory.deleteFileInCurrentDirectory(pathParser.getLastPieceOfPath());
     }
-
+    private String tabs(int n) {
+        String string = new String();
+        for (int i = 1; i < n; i++) {
+            string += "\t";
+        }
+        return string;
+    }
     @Override
     public String toString() {
         String string = new String();
@@ -134,13 +146,6 @@ public class Directory {
                 return string;
             }
             string += directory.toString();
-        }
-        return string;
-    }
-    private String tabs(int n) {
-        String string = new String();
-        for (int i = 1; i < n; i++) {
-            string += "\t";
         }
         return string;
     }

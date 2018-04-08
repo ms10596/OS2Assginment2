@@ -17,9 +17,6 @@ public class Saving {
         }
         for(File file:files) {
             writer.print("f "+file.getPath()+ " "+file.size()+" ");
-            /*for (Integer integer:file.getIndexBlock().getNeighbors()) {
-                writer.print(integer+" ");
-            }*/
         }
 
     }
@@ -30,7 +27,6 @@ public class Saving {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //writer.print(20+" "+10+" ");
         try {
             writeDirectory(root);
         } catch (Exception e) {

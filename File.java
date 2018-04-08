@@ -8,10 +8,7 @@ public class File {
     public Block getIndexBlock() {
         return indexBlock;
     }
-    @Override
-    public String toString() {
-        return "•"+path;
-    }
+
     public String getName() {
         PathParser pathParser = new PathParser(path);
         return pathParser.getLastPieceOfPath();
@@ -21,5 +18,10 @@ public class File {
     }
     public int size() {
         return indexBlock.size();
+    }
+
+    @Override
+    public String toString() {
+        return "•"+path;
     }
 }

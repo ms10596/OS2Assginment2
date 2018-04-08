@@ -25,6 +25,7 @@ public class Block {
     }
     public void free() {
         free = true;
+        neighbors.clear();
     }
 
     public ArrayList<Integer> getNeighbors() {
@@ -33,11 +34,12 @@ public class Block {
 
     @Override
     public String toString() {
-        return "Block{" +
-                "id=" + id +
-                ", neighbors=" + neighbors +
-                ", free=" + free +
-                '}';
+        String string = new String(Integer.toString(id)+"->");
+        if(neighbors.size() > 0) string += " "+neighbors;
+        if(isFree()) string += "(free)";
+        else string += "(used)";
+        return string;
+
     }
 
     public int size() {
