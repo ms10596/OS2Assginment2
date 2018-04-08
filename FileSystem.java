@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class FileSystem {
     private Directory root ;
     private Disk disk;
@@ -13,9 +11,9 @@ public class FileSystem {
     }
 
     public boolean createFile(String path, int size){
-        ArrayList<Integer> requiredBlocks = disk.allocate(size);
-        if(requiredBlocks != null){
-            root.createFile(path, requiredBlocks);
+        Block indexBlock = disk.allocate(size);
+        if(indexBlock != null){
+            root.createFile(path, indexBlock);
             return true;
         }
         return false;
@@ -32,8 +30,8 @@ public class FileSystem {
     public void displayDiskStatus(){
         System.out.println("Empty space: "+disk.emptySpace()+ " KB");
         System.out.println("Allocated space: "+disk.allocatedSpace() + " KB");
-        for(Extent extent:disk.getExtents()) {
-            System.out.println(extent);
+        for(Block block:disk.getBlocks()) {
+            System.out.println(block);
         }
     }
     public void displayDiskStructure(){

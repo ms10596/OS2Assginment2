@@ -32,10 +32,10 @@ public class Directory {
         }
         return null;
     }
-    private ArrayList<Integer> deleteDirectoryInCurrentDirectory(String name) {
+    private ArrayList<Block> deleteDirectoryInCurrentDirectory(String name) {
         System.out.println(name);
         Directory toBeDeleted = findDirectoryInCurrentDirectory(name);
-        ArrayList<Integer> allocatedBlocks = new ArrayList<>();
+        ArrayList<Block> allocatedBlocks = new ArrayList<>();
         if (toBeDeleted.isEmpty()) {
             directories.remove(toBeDeleted);
             return allocatedBlocks;
@@ -47,8 +47,8 @@ public class Directory {
         }
         return allocatedBlocks;
     }
-    private ArrayList<Integer> deleteAllDirectoriesInCurrentDirectory() {
-        ArrayList<Integer> allocatedBlocks = new ArrayList<>();
+    private ArrayList<Block> deleteAllDirectoriesInCurrentDirectory() {
+        ArrayList<Block> allocatedBlocks = new ArrayList<>();
         while (directories.size() > 0) {
             Directory directory = directories.get(0);
             allocatedBlocks.addAll(directory.deleteAllFilesInCurrentDirectory());
@@ -66,7 +66,7 @@ public class Directory {
         currentDirectory.directories.add(new Directory(path));
         return true;
     }
-    public ArrayList<Integer> deleteDirectory(String path) {
+    public ArrayList<Block> deleteDirectory(String path) {
         PathParser pathParser = new PathParser(path);
         Directory currentDirectory = this;
         pathParser.retrieveParent();
@@ -74,7 +74,7 @@ public class Directory {
             currentDirectory = currentDirectory.findDirectoryInCurrentDirectory(pathParser.retrieveParent());
         }
         currentDirectory = currentDirectory.findDirectoryInCurrentDirectory(pathParser.getParent());
-        ArrayList<Integer> allocatedBlocks = currentDirectory.deleteAllFilesInCurrentDirectory();
+        ArrayList<Block> allocatedBlocks = currentDirectory.deleteAllFilesInCurrentDirectory();
         allocatedBlocks.addAll(currentDirectory.deleteAllDirectoriesInCurrentDirectory());
         directories.remove(currentDirectory);
         return allocatedBlocks;
@@ -83,24 +83,24 @@ public class Directory {
         return directories.size() == 0 && files.size() == 0;
     }
 
-    private ArrayList<Integer> deleteFileInCurrentDirectory(String name) {
+    private Block deleteFileInCurrentDirectory(String name) {
         for (File file : files) {
             if (file.getName().equals(name)) {
-                ArrayList<Integer> allocatedBlocks = file.getAllocatedBlocks();
+                Block allocatedBlocks = file.getIndexBlock();
                 files.remove(file);
                 return allocatedBlocks;
             }
         }
         return null;
     }
-    private ArrayList<Integer> deleteAllFilesInCurrentDirectory() {
-        ArrayList<Integer> allocatedBlocks = new ArrayList<>();
+    private ArrayList<Block> deleteAllFilesInCurrentDirectory() {
+        ArrayList<Block> allocatedBlocks = new ArrayList<>();
         while (files.size() > 0) {
-            allocatedBlocks.addAll(deleteFileInCurrentDirectory(files.get(0).getName()));
+            allocatedBlocks.add(deleteFileInCurrentDirectory(files.get(0).getName()));
         }
         return allocatedBlocks;
     }
-    public boolean createFile(String path, ArrayList<Integer> allocatedBlocks) {
+    public boolean createFile(String path, Block allocatedBlocks) {
         PathParser pathParser = new PathParser(path);
         Directory currentDirectory = this;
         pathParser.retrieveParent();
@@ -110,7 +110,7 @@ public class Directory {
         currentDirectory.files.add(new File(path, allocatedBlocks));
         return true;
     }
-    public ArrayList<Integer> deleteFile(String path) {
+    public Block deleteFile(String path) {
         PathParser pathParser = new PathParser(path);
         Directory currentDirectory = this;
         pathParser.retrieveParent();

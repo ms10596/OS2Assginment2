@@ -17,8 +17,10 @@ public class Saving {
         }
         for(File file:files) {
             writer.print("f "+file.getPath()+ " ");
-            writer.print(file.getAllocatedBlocks().get(0)+" ");
-            writer.print(file.getAllocatedBlocks().size()+" ");
+            writer.print(file.getIndexBlock().getNeighbors().size()+" ");
+            for (Integer integer:file.getIndexBlock().getNeighbors()) {
+                writer.print(integer+" ");
+            }
         }
 
     }

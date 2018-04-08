@@ -1,53 +1,56 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Disk {
-    private ArrayList <Extent> extents;
     private final int n;
-
+    private ArrayList <Block> blocks;
     public Disk(int n, int extentSize) {
         this.n = n;
-        extents = new ArrayList<>();
-        for(int i=0;i<n;i+=extentSize) {
-            extents.add(new Extent(i, extentSize));
-        }
+        blocks = new ArrayList<>();
     }
-    public ArrayList<Integer> allocate(int requiredBlocks){
-        ArrayList<Integer> blocks = new ArrayList<>();
-        Collections.sort(extents, new Comparator<Extent>() {
-            @Override
-            public int compare(Extent t1, Extent t2) {
-                return Integer.compare(t1.freeBlocksSize(), t2.freeBlocksSize());
-            }
-        });
-        for(Extent extent:extents) {
-            if(requiredBlocks <= 0)break;
-            int newBlocks = Math.min(extent.freeBlocksSize(), requiredBlocks);
-            blocks.addAll(extent.requestSpace(newBlocks));
-            requiredBlocks -= newBlocks;
 
+    public Block allocate(int requiredBlocks){
+        Block indexBlock = null;
+        if(requiredBlocks > emptySpace() - 1 ) return indexBlock;
+        for(int i=0; i<blocks.size() && requiredBlocks > 0; i++) {
+            if(blocks.get(i).isFree()) {
+                indexBlock = blocks.get(i);
+                for (int j = i + 1; j < blocks.size() && requiredBlocks > 0; j++) {
+                    if(blocks.get(j).isFree()) {
+                        --requiredBlocks;
+                        indexBlock.addNeighbor(j);
+                    }
+                }
+            }
         }
-        return blocks;
+        return indexBlock;
     }
-    public boolean free(ArrayList<Integer> toBeFreed){
-        for (Extent extent:extents) {
-            if(toBeFreed.size() == 0) return true;
-            extent.freeSpace(toBeFreed);
+    public boolean free(Block indexBlock){
+        ArrayList <Integer> toBeFreedBlocks = indexBlock.getNeighbors();
+        for(Integer index:toBeFreedBlocks) {
+            blocks.get(index).free();
         }
         return true;
     }
-    public int emptySpace() {
-        int emptySpaces = 0;
-        for(Extent extent:extents) {
-            emptySpaces += extent.freeBlocksSize();
+    public boolean free(ArrayList<Block>blocks) {
+        for(Block block:blocks) {
+            free(block);
         }
-        return emptySpaces;
+        return true;
     }
+
+    public int emptySpace() {
+        int cnt = 0;
+        for(Block block:blocks) {
+            if(block.isFree()) ++cnt;
+        }
+        return cnt;
+    }
+
     public int allocatedSpace() {
         return n - emptySpace();
     }
-    public ArrayList<Extent> getExtents() {
-        return extents;
+
+    public ArrayList<Block> getBlocks() {
+        return blocks;
     }
 }

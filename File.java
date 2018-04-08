@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-
 public class File {
     private String path;
-    private ArrayList<Integer> allocatedBlocks;
-    public File(String filePath, ArrayList<Integer> allocatedBlocks) {
+    private Block indexBlock;
+    public File(String filePath, Block indexBlock) {
         this.path = filePath;
-        this.allocatedBlocks = allocatedBlocks;
+        this.indexBlock = indexBlock;
     }
-    public ArrayList<Integer> getAllocatedBlocks() {
-        return allocatedBlocks;
+    public Block getIndexBlock() {
+        return indexBlock;
     }
     @Override
     public String toString() {

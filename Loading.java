@@ -19,7 +19,6 @@ public class Loading {
             String type = scan.next();
             if(type.equals("f")) {
                 String path = scan.next();
-                int start = scan.nextInt();
                 int size = scan.nextInt();
                 fileSystem.createFile(path, size);
             }
