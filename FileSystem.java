@@ -1,9 +1,9 @@
 public class FileSystem {
     private Directory root ;
     private Disk disk;
-    public FileSystem(Directory root, int size, int extentSize) {
+    public FileSystem(Directory root, int size) {
         this.root = root;
-        disk = new Disk(size, extentSize);
+        disk = new Disk(size);
     }
 
     public Directory getRoot() {

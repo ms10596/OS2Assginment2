@@ -13,7 +13,7 @@ public class Loading {
             e.printStackTrace();
         }
         Directory root = new Directory("root");
-        FileSystem fileSystem = new FileSystem(root, 100,10);
+        FileSystem fileSystem = new FileSystem(root, 20);
         if(file.length() == 0)return fileSystem ;
         while(scan.hasNext()) {
             String type = scan.next();

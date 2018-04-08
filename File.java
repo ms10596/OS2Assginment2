@@ -19,4 +19,7 @@ public class File {
     public String getPath() {
         return path;
     }
+    public int size() {
+        return indexBlock.size();
+    }
 }

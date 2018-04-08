@@ -1,12 +1,19 @@
 import java.util.ArrayList;
 
 public class Block {
+    private int id;
     private ArrayList <Integer> neighbors;
     private boolean free ;
-    public Block() {
-        neighbors = new ArrayList<>();
-        free = true;
+    public Block(int id) {
+        this.id = id;
+        this.neighbors = new ArrayList<>();
+        this.free = true;
     }
+
+    public int getId() {
+        return id;
+    }
+
     public void addNeighbor(int blockIndex) {
         neighbors.add(blockIndex);
     }
@@ -27,8 +34,13 @@ public class Block {
     @Override
     public String toString() {
         return "Block{" +
-                "neighbors=" + neighbors +
+                "id=" + id +
+                ", neighbors=" + neighbors +
                 ", free=" + free +
                 '}';
+    }
+
+    public int size() {
+        return neighbors.size();
     }
 }

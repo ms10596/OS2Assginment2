@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Saving {
     private static PrintWriter writer;
-    private static void writeDirectory(Directory root) throws Exception {
+    private static void writeDirectory(Directory root) {
         ArrayList <Directory> directories = root.getDirectories();
         ArrayList <File> files = root.getFiles();
         if(root.getPath().equals("root")==false)writer.print("d "+root.getPath()+" ");
@@ -16,11 +16,10 @@ public class Saving {
             writeDirectory(directory);
         }
         for(File file:files) {
-            writer.print("f "+file.getPath()+ " ");
-            writer.print(file.getIndexBlock().getNeighbors().size()+" ");
-            for (Integer integer:file.getIndexBlock().getNeighbors()) {
+            writer.print("f "+file.getPath()+ " "+file.size()+" ");
+            /*for (Integer integer:file.getIndexBlock().getNeighbors()) {
                 writer.print(integer+" ");
-            }
+            }*/
         }
 
     }
@@ -31,7 +30,7 @@ public class Saving {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //writer.print(100+" "+10+" ");
+        //writer.print(20+" "+10+" ");
         try {
             writeDirectory(root);
         } catch (Exception e) {
