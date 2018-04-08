@@ -14,6 +14,7 @@ public class Disk {
         }
     }
     public ArrayList<Integer> allocate(int requiredBlocks){
+        ArrayList<Integer> blocks = new ArrayList<>();
         Collections.sort(extents, new Comparator<Extent>() {
             @Override
             public int compare(Extent t1, Extent t2) {
@@ -21,11 +22,13 @@ public class Disk {
             }
         });
         for(Extent extent:extents) {
-            if(extent.freeBlocksSize() >= requiredBlocks) {
-                return extent.requestSpace(requiredBlocks);
-            }
+            if(requiredBlocks <= 0)break;
+            int newBlocks = Math.min(extent.freeBlocksSize(), requiredBlocks);
+            blocks.addAll(extent.requestSpace(newBlocks));
+            requiredBlocks -= newBlocks;
+
         }
-        return null;
+        return blocks;
     }
     public boolean free(ArrayList<Integer> toBeFreed){
         for (Extent extent:extents) {

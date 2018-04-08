@@ -5,29 +5,30 @@ public class Loading {
     private static java.io.File file;
     private static Scanner scan;
 
-    public static  Directory load() {
+    public static FileSystem load() {
         file = new java.io.File("data.txt");
-        Directory root = new Directory("root");
-        if(file.length() == 0)return root ;
         try {
             scan = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        Directory root = new Directory("root");
+        FileSystem fileSystem = new FileSystem(root, 100,10);
+        if(file.length() == 0)return fileSystem ;
         while(scan.hasNext()) {
             String type = scan.next();
             if(type.equals("f")) {
                 String path = scan.next();
                 int start = scan.nextInt();
                 int size = scan.nextInt();
-                root.createFile(path, makeList(start, size));
+                fileSystem.createFile(path, size);
             }
             else {
                 String path = scan.next();
-                root.createDirectory(path);
+                fileSystem.createDirectory(path);
             }
         }
-        return root;
+        return fileSystem;
     }
     private static ArrayList<Integer> makeList (int start, int size) {
         ArrayList<Integer>blocksToBeAllocated = new ArrayList<>();

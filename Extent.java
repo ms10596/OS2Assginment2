@@ -47,15 +47,10 @@ public class Extent {
     @Override
     public String toString() {
         String string = new String();
-        for (int i = start; i < start + size; i++) {
-
-            string += i>9?Integer.toString(i):"0"+Integer.toString(i) ;
-            if(allocatedBlocks[i-start]){
-                string +=":" + Boolean.toString(allocatedBlocks[i - start]) + "  ";
-            }
-            else string +=":" + Boolean.toString(allocatedBlocks[i - start]) + " ";
-
-        }
+        string+=Integer.toString(freeBlocksSize());
+        /*string+=" 1 ";
+        string+=Integer.toString(size - freeBlocksSize());
+        string+=" 0 ";*/
         return string;
     }
 

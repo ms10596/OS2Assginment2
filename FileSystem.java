@@ -20,7 +20,7 @@ public class FileSystem {
         }
         return false;
     }
-    public boolean createFolder(String path){
+    public boolean createDirectory(String path){
         return root.createDirectory(path);
     }
     public boolean deleteFile(String path){

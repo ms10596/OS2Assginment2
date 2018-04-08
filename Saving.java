@@ -29,6 +29,7 @@ public class Saving {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        //writer.print(100+" "+10+" ");
         try {
             writeDirectory(root);
         } catch (Exception e) {
